@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd floating-widget-library && npm install --force && npm run build",
+  "buildCommand": "cd floating-widget-library && npm run build",
   "outputDirectory": "floating-widget-library/dist",
-  "installCommand": "cd floating-widget-library && rm -f package-lock.json bun.lock && npm install",
+  "installCommand": "cd floating-widget-library && rm -rf node_modules package-lock.json bun.lock && npm cache clean --force && npm install --no-optional",
   "framework": null
 }
