@@ -18,6 +18,9 @@ interface ExpandedAnswerTabProps {
   onSuggestionClick: (text: string) => void;
   onMoreClick: () => void;
   onMicClick?: () => void;
+  onSearchFocus?: () => void;
+  onSearchBlur?: () => void;
+  contentState?: string;
   className?: string;
 }
 
@@ -28,6 +31,9 @@ export function ExpandedAnswerTab({
   onSuggestionClick,
   onMoreClick,
   onMicClick,
+  onSearchFocus,
+  onSearchBlur,
+  contentState,
   className = ''
 }: ExpandedAnswerTabProps) {
   return (
@@ -40,6 +46,8 @@ export function ExpandedAnswerTab({
         value={searchValue}
         onChange={onSearchChange}
         onMicClick={onMicClick}
+        onFocus={onSearchFocus}
+        onBlur={onSearchBlur}
       />
       
       {/* Suggestions Section */}

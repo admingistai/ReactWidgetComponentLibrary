@@ -13,6 +13,8 @@ interface SearchBarProps {
   onChange: (value: string) => void;
   onMicClick?: () => void;
   onPlusClick?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   className?: string;
 }
 
@@ -21,10 +23,39 @@ export function SearchBar({
   onChange, 
   onMicClick,
   onPlusClick,
+  onFocus,
+  onBlur,
   className = '' 
 }: SearchBarProps) {
+  // Inline styles for gradient text and placeholder
+  const inputStyles = {
+    background: `linear-gradient(${tokens.colors.gradient.direction}, ${tokens.colors.gradient.start} 0%, ${tokens.colors.gradient.end} 100%)`,
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    border: 'none',
+    outline: 'none',
+    fontSize: tokens.typography.sizes.sm,
+    fontFamily: tokens.typography.fontFamily,
+    fontWeight: tokens.typography.weights.normal,
+    lineHeight: tokens.typography.lineHeights.sm,
+    width: '180px'
+  };
   return (
-    <GlassContainer variant="searchBar" className={className}>
+    <>
+      {/* CSS for placeholder styling */}
+      <style>{`
+        .gradient-input-placeholder::placeholder {
+          color: ${tokens.colors.text.accent};
+          -webkit-text-fill-color: ${tokens.colors.text.accent};
+          opacity: 0.7;
+        }
+      `}</style>
+      
+      <GlassContainer 
+        variant="searchBar" 
+        className={className}
+      >
       {/* Left section: Search input area */}
       <div 
         style={{
@@ -45,23 +76,16 @@ export function SearchBar({
         >
           <PlusButton onClick={onPlusClick} />
           
-          {/* Input field (simplified for now - will be enhanced later) */}
+          {/* Input field with gradient text */}
           <input
             type="text"
             value={value}
             onChange={(e) => onChange(e.target.value)}
+            onFocus={onFocus}
+            onBlur={onBlur}
             placeholder="Ask Anything"
-            style={{
-              background: 'transparent',
-              border: 'none',
-              outline: 'none',
-              color: tokens.colors.text.accent,
-              fontSize: tokens.typography.sizes.sm,
-              fontFamily: tokens.typography.fontFamily,
-              fontWeight: tokens.typography.weights.normal,
-              lineHeight: tokens.typography.lineHeights.sm,
-              width: '180px'
-            }}
+            style={inputStyles}
+            className="gradient-input-placeholder"
           />
         </div>
 
@@ -71,8 +95,9 @@ export function SearchBar({
         </IconButton>
       </div>
 
-      {/* Right section: NYT Logo */}
-      <NYTimesLogo />
-    </GlassContainer>
+        {/* Right section: NYT Logo */}
+        <NYTimesLogo />
+      </GlassContainer>
+    </>
   );
 }

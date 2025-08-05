@@ -14,3 +14,6 @@ export * from './logos';
 
 // Containers
 export * from './containers';
+
+// Text Components
+export { SearchingText } from './SearchingText';

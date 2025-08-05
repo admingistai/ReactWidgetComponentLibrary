@@ -4,10 +4,12 @@
  * Following "Thinking in React" Step 4 & 5 - State management and inverse data flow
  */
 
-import { useState, useRef, type RefObject } from 'react';
+import { useState, useRef, useEffect, type RefObject } from 'react';
 import { CompactButton } from '../molecules';
-import { ExpandedAnswerTab } from '../organisms';
+import { ExpandedAnswerTab, TypingPhase } from '../organisms';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { CONTENT_STATES, type ContentState } from '@/lib/constants';
+import { filterSuggestions } from '@/lib/autocomplete-data';
 
 interface MainFlowProps {
   initialExpanded?: boolean;
@@ -30,9 +32,12 @@ export function MainFlow({
   // State management - minimal representation
   const [isExpanded, setIsExpanded] = useState(initialExpanded);
   const [searchValue, setSearchValue] = useState('');
+  const [contentState, setContentState] = useState<ContentState>(CONTENT_STATES.IDLE);
+  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   
   // Ref for click-outside detection
   const widgetRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   
   // Click-outside handler to collapse widget
   const handleClickOutside = () => {
@@ -43,6 +48,12 @@ export function MainFlow({
   
   // Use click-outside hook - only when expanded to avoid unnecessary listeners
   useClickOutside(widgetRef as RefObject<HTMLElement>, handleClickOutside, isExpanded);
+  
+  // Filter autocomplete suggestions based on search value
+  useEffect(() => {
+    const suggestions = filterSuggestions(searchValue, 6);
+    setFilteredSuggestions(suggestions);
+  }, [searchValue]);
   
   // Event handlers - inverse data flow
   const handleToggleExpand = () => {
@@ -74,10 +85,48 @@ export function MainFlow({
     // Could start voice recording, etc.
   };
   
+  const handleSearchFocus = () => {
+    setContentState(CONTENT_STATES.TYPING);
+  };
+  
+  const handleSearchBlur = () => {
+    // Only return to IDLE if we're not clicking within the widget
+    // This will be handled by a click handler on the widget container
+  };
+
+  const handleAutocompleteSuggestionSelect = (suggestion: string) => {
+    setSearchValue(suggestion);
+    // Clear autocomplete suggestions after selection
+    setFilteredSuggestions([]);
+    // Optionally notify parent
+    onSuggestionSelect?.(suggestion);
+  };
+  
+  const handleWidgetClick = (e: React.MouseEvent) => {
+    // If we're in typing phase and clicked inside widget but not on search input
+    if (contentState === CONTENT_STATES.TYPING && 
+        searchInputRef.current && 
+        !searchInputRef.current.contains(e.target as Node)) {
+      setContentState(CONTENT_STATES.IDLE);
+    }
+  };
+  
   // Render based on state
   return (
-    <div ref={widgetRef} className={className}>
-      {isExpanded ? (
+    <div ref={widgetRef} className={className} onClick={handleWidgetClick}>
+      {!isExpanded ? (
+        <CompactButton onClick={handleToggleExpand} />
+      ) : contentState === CONTENT_STATES.TYPING ? (
+        <TypingPhase
+          searchValue={searchValue}
+          onSearchChange={handleSearchChange}
+          onSearchFocus={handleSearchFocus}
+          onSearchBlur={handleSearchBlur}
+          onMicClick={handleMicClick}
+          autocompleteSuggestions={filteredSuggestions}
+          onAutocompleteSuggestionSelect={handleAutocompleteSuggestionSelect}
+        />
+      ) : (
         <ExpandedAnswerTab
           searchValue={searchValue}
           suggestions={DEFAULT_SUGGESTIONS}
@@ -85,9 +134,10 @@ export function MainFlow({
           onSuggestionClick={handleSuggestionClick}
           onMoreClick={handleMoreClick}
           onMicClick={handleMicClick}
+          onSearchFocus={handleSearchFocus}
+          onSearchBlur={handleSearchBlur}
+          contentState={contentState}
         />
-      ) : (
-        <CompactButton onClick={handleToggleExpand} />
       )}
     </div>
   );

@@ -51,6 +51,7 @@ import {
   MoreButton,
   PlusButton,
   PoweredByButton,
+  SearchingAnimation,
   // Organisms
   Header,
   SuggestionsList,
@@ -451,13 +452,30 @@ function App() {
 
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">SuggestionItem</h4>
+                      <h4 className="text-sm font-medium">SuggestionItem (Default)</h4>
                       <div className="p-4 bg-muted/50 rounded-lg">
                         <SuggestionItem
                           text="Sample suggestion"
                           onClick={() => console.log("Suggestion clicked")}
                         />
                       </div>
+                      <p className="text-xs text-muted-foreground">
+                        Default variant with 2-star icon for general suggestions
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">SuggestionItem (Search)</h4>
+                      <div className="p-4 bg-muted/50 rounded-lg">
+                        <SuggestionItem
+                          text="Search query example"
+                          onClick={() => console.log("Search suggestion clicked")}
+                          variant="search"
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Search variant with magnifying glass icon for autocomplete
+                      </p>
                     </div>
 
                     <div className="space-y-2">
@@ -467,6 +485,21 @@ function App() {
                       </div>
                     </div>
                   </div>
+                </div>
+
+                {/* New SearchingAnimation Component */}
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium">SearchingAnimation</h4>
+                  <div className="p-4 bg-muted/50 rounded-lg">
+                    <SearchingAnimation 
+                      isActive={true}
+                      interval={2000}
+                      items={["articles", "books", "videos", "podcasts", "archives", "newsletters"]}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Vertical text carousel showing "Searching through [content type]" with smooth animations
+                  </p>
                 </div>
 
                 <div className="space-y-2">

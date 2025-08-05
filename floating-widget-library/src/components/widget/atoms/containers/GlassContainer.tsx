@@ -78,13 +78,16 @@ export function GlassContainer({
   children, 
   onClick,
   className = '',
-  style = {}
+  style = {},
+  showGradientBorder
 }: GlassContainerProps) {
   const variantStyle = variantStyles[variant];
   
   // Add glass-morphism class for dark mode support
   // Add gradient-border class for compact and searchBar variants
   const classes = ['glass-morphism'];
+  
+  // Always show gradient border for compact and searchBar variants
   if (variant === 'compact' || variant === 'searchBar') {
     classes.push('gradient-border');
   }

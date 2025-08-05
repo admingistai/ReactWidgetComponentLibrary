@@ -9,3 +9,4 @@ export { SuggestionItem } from './SuggestionItem';
 export { MoreButton } from './MoreButton';
 export { PlusButton } from './PlusButton';
 export { PoweredByButton } from './PoweredByButton';
+export { SearchingAnimation } from './SearchingAnimation';

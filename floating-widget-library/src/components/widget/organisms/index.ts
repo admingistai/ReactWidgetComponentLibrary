@@ -7,3 +7,5 @@ export { Header } from './Header';
 export { SuggestionsList } from './SuggestionsList';
 export { PoweredByFooter } from './PoweredByFooter';
 export { ExpandedAnswerTab } from './ExpandedAnswerTab';
+export { TypingPhase } from './TypingPhase';
+export { AutocompleteDropdown } from './AutocompleteDropdown';

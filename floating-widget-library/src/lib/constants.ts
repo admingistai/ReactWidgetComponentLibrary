@@ -62,3 +62,13 @@ export const Z_INDEX = {
   TOOLTIP: 1300,
   NOTIFICATION: 1400,
 } as const;
+
+export const CONTENT_STATES = {
+  IDLE: 'idle',
+  TYPING: 'typing',
+  SEARCHING: 'searching',
+  RESULTS: 'results',
+  ERROR: 'error',
+} as const;
+
+export type ContentState = (typeof CONTENT_STATES)[keyof typeof CONTENT_STATES];
