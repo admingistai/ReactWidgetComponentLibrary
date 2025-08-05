@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd floating-widget-library && npm run build",
+  "buildCommand": "cd floating-widget-library && npm install @rollup/rollup-linux-x64-gnu && npm run build",
   "outputDirectory": "floating-widget-library/dist",
   "installCommand": "cd floating-widget-library && rm -rf node_modules package-lock.json bun.lock && npm cache clean --force && npm install",
   "framework": null
