@@ -11,20 +11,24 @@ import { PlusButton } from './PlusButton';
 interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
+  onSubmit?: (value: string) => void;
   onMicClick?: () => void;
   onPlusClick?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  readOnly?: boolean;
   className?: string;
 }
 
 export function SearchBar({ 
   value, 
   onChange, 
+  onSubmit,
   onMicClick,
   onPlusClick,
   onFocus,
   onBlur,
+  readOnly = false,
   className = '' 
 }: SearchBarProps) {
   // Inline styles for gradient text and placeholder
@@ -80,12 +84,22 @@ export function SearchBar({
           <input
             type="text"
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => !readOnly && onChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && onSubmit && !readOnly) {
+                e.preventDefault();
+                onSubmit(value);
+              }
+            }}
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder="Ask Anything"
-            style={inputStyles}
+            style={{
+              ...inputStyles,
+              cursor: readOnly ? 'default' : 'text'
+            }}
             className="gradient-input-placeholder"
+            readOnly={readOnly}
           />
         </div>
 

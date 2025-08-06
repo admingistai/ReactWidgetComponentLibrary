@@ -5,11 +5,11 @@
  */
 
 import { tokens } from '@/lib/design-tokens';
-import { GlassContainer } from '../atoms';
-import { SearchBar, MoreButton } from '../molecules';
-import { Header } from './Header';
-import { SuggestionsList } from './SuggestionsList';
-import { PoweredByFooter } from './PoweredByFooter';
+import { GlassContainer } from '../../atoms';
+import { SearchBar, MoreButton } from '../../molecules';
+import { Header } from '../Header';
+import { SuggestionsList } from '../SuggestionsList';
+import { PoweredByFooter } from '../PoweredByFooter';
 
 interface ExpandedAnswerTabProps {
   searchValue: string;

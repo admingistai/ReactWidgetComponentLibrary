@@ -6,7 +6,7 @@
 
 import { useState, useRef, useEffect, type RefObject } from 'react';
 import { CompactButton } from '../molecules';
-import { ExpandedAnswerTab, TypingPhase } from '../organisms';
+import { ExpandedAnswerTab, TypingPhase, SearchingPhase } from '../organisms';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { CONTENT_STATES, type ContentState } from '@/lib/constants';
 import { filterSuggestions } from '@/lib/autocomplete-data';
@@ -34,6 +34,7 @@ export function MainFlow({
   const [searchValue, setSearchValue] = useState('');
   const [contentState, setContentState] = useState<ContentState>(CONTENT_STATES.IDLE);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState(''); // Store the query being searched
   
   // Ref for click-outside detection
   const widgetRef = useRef<HTMLDivElement>(null);
@@ -102,6 +103,24 @@ export function MainFlow({
     onSuggestionSelect?.(suggestion);
   };
   
+  const handleSearch = (query: string) => {
+    if (!query.trim()) return;
+    
+    // Store the search query and transition to searching state
+    setSearchQuery(query);
+    setContentState(CONTENT_STATES.SEARCHING);
+    
+    // Clear autocomplete suggestions
+    setFilteredSuggestions([]);
+    
+    // Simulate search completion after a delay (for demo)
+    setTimeout(() => {
+      // In a real app, this would transition to RESULTS state
+      // For now, just go back to IDLE after "searching"
+      setContentState(CONTENT_STATES.IDLE);
+    }, 3000);
+  };
+  
   const handleWidgetClick = (e: React.MouseEvent) => {
     // If we're in typing phase and clicked inside widget but not on search input
     if (contentState === CONTENT_STATES.TYPING && 
@@ -120,11 +139,17 @@ export function MainFlow({
         <TypingPhase
           searchValue={searchValue}
           onSearchChange={handleSearchChange}
+          onSearch={handleSearch}
           onSearchFocus={handleSearchFocus}
           onSearchBlur={handleSearchBlur}
           onMicClick={handleMicClick}
           autocompleteSuggestions={filteredSuggestions}
           onAutocompleteSuggestionSelect={handleAutocompleteSuggestionSelect}
+        />
+      ) : contentState === CONTENT_STATES.SEARCHING ? (
+        <SearchingPhase
+          searchQuery={searchQuery}
+          onMicClick={handleMicClick}
         />
       ) : (
         <ExpandedAnswerTab

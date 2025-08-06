@@ -22,6 +22,11 @@ import { Toaster } from "@/components/ui/toaster";
 
 // Lazy load showcase components
 const FormShowcase = lazy(() => import("@/components/showcase/FormShowcase").then(m => ({ default: m.FormShowcase })));
+const LayoutShowcase = lazy(() => import("@/components/showcase/LayoutShowcase").then(m => ({ default: m.LayoutShowcase })));
+const DataDisplayShowcase = lazy(() => import("@/components/showcase/DataDisplayShowcase").then(m => ({ default: m.DataDisplayShowcase })));
+const FeedbackShowcase = lazy(() => import("@/components/showcase/FeedbackShowcase").then(m => ({ default: m.FeedbackShowcase })));
+const NavigationShowcase = lazy(() => import("@/components/showcase/NavigationShowcase").then(m => ({ default: m.NavigationShowcase })));
+const OverlayShowcase = lazy(() => import("@/components/showcase/OverlayShowcase").then(m => ({ default: m.OverlayShowcase })));
 
 // Component categories with metadata
 const COMPONENT_CATEGORIES = {
@@ -40,7 +45,7 @@ const COMPONENT_CATEGORIES = {
     label: "Layout",
     icon: Layout,
     description: "Structure and container components",
-    component: null, // To be implemented
+    component: LayoutShowcase,
     components: [
       "Card", "Accordion", "Tabs", "Collapsible",
       "Aspect Ratio", "Separator", "Resizable"
@@ -50,7 +55,7 @@ const COMPONENT_CATEGORIES = {
     label: "Data Display",
     icon: Database,
     description: "Components for displaying data",
-    component: null, // To be implemented
+    component: DataDisplayShowcase,
     components: [
       "Table", "Badge", "Avatar", "Progress",
       "Calendar", "Carousel", "Chart", "Skeleton"
@@ -60,7 +65,7 @@ const COMPONENT_CATEGORIES = {
     label: "Feedback",
     icon: MessageSquare,
     description: "User feedback and notifications",
-    component: null, // To be implemented
+    component: FeedbackShowcase,
     components: [
       "Alert", "Alert Dialog", "Toast", "Dialog", "Drawer"
     ]
@@ -69,7 +74,7 @@ const COMPONENT_CATEGORIES = {
     label: "Navigation",
     icon: Navigation,
     description: "Navigation and menu components",
-    component: null, // To be implemented
+    component: NavigationShowcase,
     components: [
       "Breadcrumb", "Dropdown Menu", "Menubar",
       "Navigation Menu", "Pagination", "Command", "Context Menu"
@@ -79,7 +84,7 @@ const COMPONENT_CATEGORIES = {
     label: "Overlay",
     icon: Layers,
     description: "Overlay and floating components",
-    component: null, // To be implemented
+    component: OverlayShowcase,
     components: [
       "Popover", "Tooltip", "Hover Card",
       "Sheet", "Scroll Area", "Sidebar"

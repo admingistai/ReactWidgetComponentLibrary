@@ -3,9 +3,11 @@
  * Still pure presentational components
  */
 
+// Re-export all phases from the phases folder
+export { ExpandedAnswerTab, TypingPhase, SearchingPhase } from './phases';
+
+// Export other organisms
 export { Header } from './Header';
 export { SuggestionsList } from './SuggestionsList';
 export { PoweredByFooter } from './PoweredByFooter';
-export { ExpandedAnswerTab } from './ExpandedAnswerTab';
-export { TypingPhase } from './TypingPhase';
 export { AutocompleteDropdown } from './AutocompleteDropdown';

@@ -5,13 +5,14 @@
  */
 
 import { tokens } from '@/lib/design-tokens';
-import { GlassContainer } from '../atoms';
-import { SearchBar } from '../molecules';
-import { AutocompleteDropdown } from './AutocompleteDropdown';
+import { GlassContainer } from '../../atoms';
+import { SearchBar } from '../../molecules';
+import { AutocompleteDropdown } from '../AutocompleteDropdown';
 
 interface TypingPhaseProps {
   searchValue: string;
   onSearchChange: (value: string) => void;
+  onSearch?: (query: string) => void;
   onSearchFocus?: () => void;
   onSearchBlur?: () => void;
   onMicClick?: () => void;
@@ -24,6 +25,7 @@ interface TypingPhaseProps {
 export function TypingPhase({
   searchValue,
   onSearchChange,
+  onSearch,
   onSearchFocus,
   onSearchBlur,
   onMicClick,
@@ -68,7 +70,13 @@ export function TypingPhase({
         <AutocompleteDropdown
           suggestions={autocompleteSuggestions}
           searchValue={searchValue}
-          onSuggestionSelect={onAutocompleteSuggestionSelect}
+          onSuggestionSelect={(suggestion) => {
+            onAutocompleteSuggestionSelect(suggestion);
+            // Trigger search when autocomplete is selected
+            if (onSearch) {
+              onSearch(suggestion);
+            }
+          }}
         />
       )}
 
@@ -76,6 +84,7 @@ export function TypingPhase({
       <SearchBar 
         value={searchValue}
         onChange={onSearchChange}
+        onSubmit={onSearch}
         onMicClick={onMicClick}
         onPlusClick={onPlusClick}
         onFocus={onSearchFocus}
