@@ -75,10 +75,6 @@ export function SuggestionItem({
     wordWrap: 'break-word' as const,
   };
 
-  const whiteTextStyle = {
-    ...baseTextStyle,
-    color: tokens.colors.text.primary,
-  };
   return (
     <div
       className={className}

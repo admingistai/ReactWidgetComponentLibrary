@@ -1,7 +1,6 @@
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { Home, Package, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 // Import pages

@@ -78,8 +78,7 @@ export function GlassContainer({
   children, 
   onClick,
   className = '',
-  style = {},
-  showGradientBorder
+  style = {}
 }: GlassContainerProps) {
   const variantStyle = variantStyles[variant];
   

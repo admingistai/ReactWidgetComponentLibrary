@@ -269,7 +269,7 @@ export function FormShowcase() {
               <Checkbox
                 id="checkbox-demo"
                 checked={checkboxValue}
-                onCheckedChange={setCheckboxValue}
+                onCheckedChange={(checked) => setCheckboxValue(checked === true)}
               />
               <Label
                 htmlFor="checkbox-demo"

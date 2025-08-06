@@ -20,7 +20,6 @@ interface ExpandedAnswerTabProps {
   onMicClick?: () => void;
   onSearchFocus?: () => void;
   onSearchBlur?: () => void;
-  contentState?: string;
   className?: string;
 }
 
@@ -33,7 +32,6 @@ export function ExpandedAnswerTab({
   onMicClick,
   onSearchFocus,
   onSearchBlur,
-  contentState,
   className = ''
 }: ExpandedAnswerTabProps) {
   return (

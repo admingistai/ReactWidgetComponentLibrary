@@ -136,7 +136,6 @@ export function MainFlow({
           onMicClick={handleMicClick}
           onSearchFocus={handleSearchFocus}
           onSearchBlur={handleSearchBlur}
-          contentState={contentState}
         />
       )}
     </div>

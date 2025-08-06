@@ -6,9 +6,6 @@
 import { useState, lazy, Suspense } from "react";
 import { 
   Search, 
-  Code2, 
-  Copy, 
-  Check,
   Layout,
   FormInput,
   Database,
@@ -19,12 +16,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 
 // Lazy load showcase components
@@ -97,7 +90,6 @@ const COMPONENT_CATEGORIES = {
 export function ShadcnShowcase() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("form");
-  const { toast } = useToast();
 
   // Filter components based on search
   const filterComponents = (components: string[]) => {

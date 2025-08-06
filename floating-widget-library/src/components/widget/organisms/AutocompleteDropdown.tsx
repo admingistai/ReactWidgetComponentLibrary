@@ -53,7 +53,7 @@ export function AutocompleteDropdown({
             overflowX: 'hidden',
           }}
         >
-          {suggestions.map((suggestion, index) => (
+          {suggestions.map((suggestion) => (
             <Command.Item
               key={suggestion}
               value={suggestion}
@@ -93,7 +93,7 @@ export function AutocompleteDropdown({
           style={{
             padding: tokens.spacing.md,
             textAlign: 'center',
-            color: tokens.colors.text.secondary,
+            color: tokens.colors.text.primary,
             fontSize: tokens.typography.sizes.sm,
             fontFamily: tokens.typography.fontFamily,
           }}
