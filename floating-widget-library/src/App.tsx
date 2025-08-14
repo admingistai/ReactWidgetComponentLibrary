@@ -1,9 +1,10 @@
 import { Routes, Route, Link, useLocation } from "react-router-dom";
-import { Home, Package, Palette } from "lucide-react";
+import { Home, Package, Palette, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 // Import pages
+import { LandingPage } from "./pages/LandingPage";
 import { WidgetShowcase } from "./pages/WidgetShowcase";
 import { ShadcnShowcase } from "./pages/ShadcnShowcase";
 
@@ -13,6 +14,11 @@ function App() {
   const navItems = [
     {
       path: "/",
+      label: "Home",
+      icon: Sparkles,
+    },
+    {
+      path: "/showcase",
       label: "Widget Showcase",
       icon: Home,
     },
@@ -65,7 +71,8 @@ function App() {
       {/* Main Content */}
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<WidgetShowcase />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/showcase" element={<WidgetShowcase />} />
           <Route path="/shadcn" element={<ShadcnShowcase />} />
         </Routes>
       </main>

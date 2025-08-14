@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/primitives/Button";
 import { Button as ShadcnButton } from "@/components/ui/button";
 import {
@@ -97,6 +97,15 @@ export function WidgetShowcase() {
   const [showChatWidget, setShowChatWidget] = useState(false);
   const [showDemoWidget, setShowDemoWidget] = useState(false);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState("primitives");
+
+  // Handle hash routing
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && ['primitives', 'composite', 'widget', 'playground'].includes(hash)) {
+      setActiveTab(hash);
+    }
+  }, []);
   
   // Phase demonstration states
   const [phase2SearchValue, setPhase2SearchValue] = useState("");
@@ -219,7 +228,7 @@ export function WidgetShowcase() {
         </div>
 
         {/* Component Showcase */}
-        <Tabs defaultValue="primitives" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="primitives">Primitives</TabsTrigger>
             <TabsTrigger value="composite">Composite</TabsTrigger>
