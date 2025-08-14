@@ -198,6 +198,21 @@
   }
 
   /* Progress indicator rotation */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient-shift {
+    background-size: 200% 200%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  /* Landing page specific animations */
   .progress-rotate {
     transition: transform 0.2s ease;
   }

@@ -30,9 +30,9 @@ export function GlassSourceItem({
   logoAlt,
   percentage,
   isExpanded,
-  index,
+  index: _index,
   backgroundColor,
-  expandDirection = 'right', // Default to right expansion
+  expandDirection: _expandDirection = 'right', // Default to right expansion
   expandedWidth = 140,
   collapsedWidth = 40,
   logoLeftPosition = 10,
@@ -42,8 +42,6 @@ export function GlassSourceItem({
 }: GlassSourceItemProps) {
   // Determine if logo is an image URL or React component/text
   const isImageUrl = typeof logo === 'string' && (logo.includes('/') || logo.includes('.'));
-  
-  const isRightExpand = expandDirection === 'right';
   
   // Calculate scale factor for transform-based animation
   const scaleX = isExpanded ? 1 : collapsedWidth / expandedWidth;
