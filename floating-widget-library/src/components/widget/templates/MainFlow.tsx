@@ -6,7 +6,7 @@
 
 import { useState, useRef, useEffect, type RefObject } from 'react';
 import { CompactButton } from '../molecules';
-import { ExpandedAnswerTab, TypingPhase, SearchingPhase } from '../organisms';
+import { ExpandedAnswerTab, TypingPhase, SearchingPhase, ResultsPhase } from '../organisms';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { CONTENT_STATES, type ContentState } from '@/lib/constants';
 import { filterSuggestions } from '@/lib/autocomplete-data';
@@ -24,6 +24,16 @@ const DEFAULT_SUGGESTIONS = [
   "Generate a new Wordle"
 ];
 
+// Mock data for results phase
+const MOCK_ANSWER = "Based on recent reporting from The New York Times, artificial intelligence is transforming multiple sectors of the economy. Companies are implementing AI solutions to improve efficiency, reduce costs, and enhance customer experiences. However, concerns about job displacement and ethical implications remain significant challenges that need to be addressed through thoughtful policy and regulation.";
+
+const MOCK_SOURCES = [
+  { title: "Trump impeachment", percentage: "34%" },
+  { title: "Elon Vs Trump", percentage: "28%" },
+  { title: "Fed Interest Rate Announcement", percentage: "10%" },
+  { title: "Additional Context", percentage: "10%" }
+];
+
 export function MainFlow({ 
   initialExpanded = false,
   onSuggestionSelect,
@@ -35,6 +45,11 @@ export function MainFlow({
   const [contentState, setContentState] = useState<ContentState>(CONTENT_STATES.IDLE);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState(''); // Store the query being searched
+  
+  // Results phase state
+  const [isLoadingSources, setIsLoadingSources] = useState(true);
+  const [followUpValue, setFollowUpValue] = useState('');
+  const [isResultsExpanded, setIsResultsExpanded] = useState(false);
   
   // Ref for click-outside detection
   const widgetRef = useRef<HTMLDivElement>(null);
@@ -113,11 +128,18 @@ export function MainFlow({
     // Clear autocomplete suggestions
     setFilteredSuggestions([]);
     
+    // Reset results state
+    setIsLoadingSources(true);
+    
     // Simulate search completion after a delay (for demo)
     setTimeout(() => {
-      // In a real app, this would transition to RESULTS state
-      // For now, just go back to IDLE after "searching"
-      setContentState(CONTENT_STATES.IDLE);
+      setContentState(CONTENT_STATES.RESULTS);
+      setIsResultsExpanded(false); // Start collapsed when showing new results
+      
+      // Simulate sources loading delay
+      setTimeout(() => {
+        setIsLoadingSources(false);
+      }, 3000);
     }, 3000);
   };
   
@@ -128,6 +150,29 @@ export function MainFlow({
         !searchInputRef.current.contains(e.target as Node)) {
       setContentState(CONTENT_STATES.IDLE);
     }
+  };
+  
+  // Results phase event handlers
+  const handleSourceClick = (source: { title: string }) => {
+    console.log('Source clicked:', source);
+    // Could navigate to source, open in new tab, etc.
+  };
+  
+  const handleFollowUpChange = (value: string) => {
+    setFollowUpValue(value);
+  };
+  
+  const handleFollowUpSubmit = (query: string) => {
+    if (!query.trim()) return;
+    
+    // Clear follow-up input and start new search
+    setFollowUpValue('');
+    setSearchValue(query);
+    handleSearch(query);
+  };
+  
+  const handleResultsExpandToggle = () => {
+    setIsResultsExpanded(!isResultsExpanded);
   };
   
   // Render based on state
@@ -150,6 +195,24 @@ export function MainFlow({
         <SearchingPhase
           searchQuery={searchQuery}
           onMicClick={handleMicClick}
+        />
+      ) : contentState === CONTENT_STATES.RESULTS ? (
+        <ResultsPhase
+          searchQuery={searchQuery}
+          answerText={MOCK_ANSWER}
+          isExpanded={isResultsExpanded}
+          onExpandToggle={handleResultsExpandToggle}
+          isLoadingSources={isLoadingSources}
+          sources={MOCK_SOURCES}
+          onSourceClick={handleSourceClick}
+          followUpValue={followUpValue}
+          onFollowUpChange={handleFollowUpChange}
+          onFollowUpSubmit={handleFollowUpSubmit}
+          onMicClick={handleMicClick}
+          onPlusClick={() => console.log('Plus clicked in results')}
+          suggestions={DEFAULT_SUGGESTIONS}
+          onSuggestionClick={handleSuggestionClick}
+          onMoreClick={handleMoreClick}
         />
       ) : (
         <ExpandedAnswerTab

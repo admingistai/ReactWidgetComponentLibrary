@@ -5,8 +5,8 @@
  */
 
 import { tokens } from '@/lib/design-tokens';
-import { GlassContainer, IconButton, MicIcon, NYTimesLogo } from '../atoms';
-import { PlusButton } from './PlusButton';
+import { GlassContainer, IconButton, MicIcon, NYTimesLogo } from '../../atoms';
+import { PlusButton } from '../buttons/PlusButton';
 
 interface SearchBarProps {
   value: string;
@@ -16,6 +16,7 @@ interface SearchBarProps {
   onPlusClick?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  placeholder?: string;
   readOnly?: boolean;
   className?: string;
 }
@@ -28,6 +29,7 @@ export function SearchBar({
   onPlusClick,
   onFocus,
   onBlur,
+  placeholder = "Ask Anything",
   readOnly = false,
   className = '' 
 }: SearchBarProps) {
@@ -93,7 +95,7 @@ export function SearchBar({
             }}
             onFocus={onFocus}
             onBlur={onBlur}
-            placeholder="Ask Anything"
+            placeholder={placeholder}
             style={{
               ...inputStyles,
               cursor: readOnly ? 'default' : 'text'

@@ -4,7 +4,7 @@
  * Following "Thinking in React" - no state, only props
  */
 
-import { PlusButtonIcon } from "../atoms";
+import { PlusButtonIcon } from "../../atoms";
 
 interface PlusButtonProps {
   onClick?: () => void;

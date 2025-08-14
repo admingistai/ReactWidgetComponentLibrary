@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/primitives/Button";
 import { Button as ShadcnButton } from "@/components/ui/button";
 import {
@@ -30,34 +30,61 @@ import {
 import { FloatingWidget } from "@/components/widget";
 import { ChatWidget } from "@/components/composite/ChatWidget";
 
-// Widget Components for Showcase
+// Widget Components for Showcase - Complete Set
 import {
-  // Atoms
+  // Atoms - Icons
   SparkleIcon,
   MicIcon,
   PlusIcon,
   PlusButtonIcon,
   GradientIcon,
+  ProgressIndicator,
+  SourceIcon,
+  // Atoms - Typography
   Text,
+  SearchingText,
+  // Atoms - Logos
   NYTimesLogo,
   PoweredByLogo,
+  // Atoms - Containers
   GlassContainer,
   IconButton as WidgetIconButton,
-  // Molecules
+  // Molecules - Buttons
   CompactButton,
-  SearchBar,
-  SuggestionItem,
+  ExpandButton,
   MoreButton,
   PlusButton,
   PoweredByButton,
+  // Molecules - Search
+  SearchBar,
   SearchingAnimation,
+  // Molecules - Content
+  AnswerHeader,
+  AnswerText,
+  SuggestionItem,
+  TabBar,
+  // Molecules - Sources
+  PercentageSourceItem,
+  PlusSourceItem,
+  GlassSourceItem,
+  // Molecules - Effects
+  FadeOverlay,
   // Organisms
   Header,
   SuggestionsList,
   PoweredByFooter,
+  AutocompleteDropdown,
+  SourcesBar,
+  StackedSources,
+  // Phases
+  ExpandedAnswerTab,
+  TypingPhase,
+  SearchingPhase,
+  ResultsPhase,
   // Templates
   MainFlow,
 } from "@/components/widget";
+import { tokens } from "@/lib/design-tokens";
 
 export function WidgetShowcase() {
   const [isLoading, setIsLoading] = useState(false);
@@ -70,6 +97,44 @@ export function WidgetShowcase() {
   const [showChatWidget, setShowChatWidget] = useState(false);
   const [showDemoWidget, setShowDemoWidget] = useState(false);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
+  
+  // Phase demonstration states
+  const [phase2SearchValue, setPhase2SearchValue] = useState("");
+  const [phase3SearchValue, setPhase3SearchValue] = useState("");
+  const [phase3Suggestions, setPhase3Suggestions] = useState<string[]>([]);
+  const [phase4SearchQuery, setPhase4SearchQuery] = useState("What did Trump say?");
+  
+  // Phase 5: Results state
+  const [phase5IsLoadingSources, setPhase5IsLoadingSources] = useState(true);
+  const [phase5FollowUpValue, setPhase5FollowUpValue] = useState("");
+  
+  // Interactive demo states for component showcase
+  const [autocompleteValue, setAutocompleteValue] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [expandButtonState, setExpandButtonState] = useState(false);
+  const [sourcesLoading, setSourcesLoading] = useState(true);
+  const [demoSearchValue, setDemoSearchValue] = useState("");
+  const [tabSelection, setTabSelection] = useState("tab1");
+  
+  // Filtered suggestions for autocomplete demo
+  const filteredSuggestions = useMemo(() => {
+    if (!autocompleteValue) return [];
+    return [
+      "What's happening in politics?",
+      "What are today's top stories?",
+      "What did the president say?",
+      "What's the weather forecast?",
+      "What's trending on social media?"
+    ].filter(s => s.toLowerCase().includes(autocompleteValue.toLowerCase()));
+  }, [autocompleteValue]);
+  
+  // Mock sources for demos
+  const mockSourcesDemo = [
+    { title: "Trump impeachment article", percentage: "85" },
+    { title: "Fed interest rate announcement", percentage: "72" },
+    { title: "Elon Musk vs Trump debate", percentage: "60" },
+    { title: "Election coverage 2024", percentage: "45" }
+  ];
 
   const handleLoadingClick = () => {
     setIsLoading(true);
@@ -97,6 +162,39 @@ export function WidgetShowcase() {
       };
       setChatMessages((prev) => [...prev, botMessage]);
     }, 1000);
+  };
+  
+  // Phase demonstration handlers
+  const handlePhase3SearchChange = (value: string) => {
+    setPhase3SearchValue(value);
+    // Simulate autocomplete suggestions
+    const mockSuggestions = [
+      "What did Trump say about the economy?",
+      "What did Biden announce today?",
+      "What's happening in Ukraine?",
+      "What are the latest COVID updates?"
+    ].filter(suggestion => 
+      value.length > 0 && suggestion.toLowerCase().includes(value.toLowerCase())
+    );
+    setPhase3Suggestions(mockSuggestions.slice(0, 4));
+  };
+  
+  // Mock data for Phase 5 (Results)
+  const mockAnswerText = "Based on recent reporting from The New York Times, artificial intelligence is transforming multiple sectors of the economy. Companies are implementing AI solutions to improve efficiency, reduce costs, and enhance customer experiences. However, concerns about job displacement and ethical implications remain significant challenges that need to be addressed through thoughtful policy and regulation.";
+  
+  const mockSourcesPhase5 = [
+    { title: "Trump impeachment", percentage: "75" },
+    { title: "Fed interest rate announcement", percentage: "65" },
+    { title: "Elon Musk vs Trump", percentage: "50" }
+  ];
+
+  const resetPhases = () => {
+    setPhase2SearchValue("");
+    setPhase3SearchValue("");
+    setPhase3Suggestions([]);
+    setPhase4SearchQuery("What did Trump say?");
+    setPhase5IsLoadingSources(true);
+    setPhase5FollowUpValue("");
   };
 
   return (
@@ -265,6 +363,170 @@ export function WidgetShowcase() {
               </CardContent>
             </Card>
 
+            {/* Widget Phase Examples Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Widget Phase Examples</CardTitle>
+                <CardDescription>
+                  Interactive demonstration of each widget phase and state transition
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <p className="text-sm text-muted-foreground">
+                    Explore each phase of the widget lifecycle with interactive examples
+                  </p>
+                  <Button variant="outline" size="sm" onClick={resetPhases}>
+                    Reset All Phases
+                  </Button>
+                </div>
+
+                {/* Phase 1: Collapsed State */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-medium">Phase 1: Collapsed State</h4>
+                    <Badge variant="outline">COLLAPSED</Badge>
+                  </div>
+                  <div className="p-4 bg-muted/50 rounded-lg flex justify-center">
+                    <CompactButton 
+                      onClick={() => console.log("Phase 1: Compact button clicked")}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Initial collapsed state with gradient button. Click to expand the widget.
+                  </p>
+                </div>
+
+                {/* Phase 2: Expanded/Idle State */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-medium">Phase 2: Expanded/Idle State</h4>
+                    <Badge variant="outline">EXPANDED</Badge>
+                  </div>
+                  <div className="p-4 bg-muted/50 rounded-lg flex justify-center">
+                    <ExpandedAnswerTab
+                      searchValue={phase2SearchValue}
+                      suggestions={["Top Stories", "Breaking News", "Generate a new Wordle"]}
+                      onSearchChange={setPhase2SearchValue}
+                      onSuggestionClick={(text) => {
+                        console.log("Phase 2: Suggestion clicked:", text);
+                        setPhase2SearchValue(text);
+                      }}
+                      onMoreClick={() => console.log("Phase 2: More clicked")}
+                      onMicClick={() => console.log("Phase 2: Mic clicked")}
+                      onSearchFocus={() => console.log("Phase 2: Search focused")}
+                      onSearchBlur={() => console.log("Phase 2: Search blurred")}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Expanded interface with search bar, suggestions, and footer. Try typing in the search bar or clicking suggestions.
+                  </p>
+                </div>
+
+                {/* Phase 3: Typing State */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-medium">Phase 3: Typing State</h4>
+                    <Badge variant="outline">TYPING</Badge>
+                  </div>
+                  <div className="p-4 bg-muted/50 rounded-lg flex justify-center">
+                    <TypingPhase
+                      searchValue={phase3SearchValue}
+                      onSearchChange={handlePhase3SearchChange}
+                      onSearch={(query) => console.log("Phase 3: Search triggered:", query)}
+                      onMicClick={() => console.log("Phase 3: Mic clicked")}
+                      onPlusClick={() => console.log("Phase 3: Plus clicked")}
+                      autocompleteSuggestions={phase3Suggestions}
+                      onAutocompleteSuggestionSelect={(suggestion) => {
+                        console.log("Phase 3: Autocomplete selected:", suggestion);
+                        setPhase3SearchValue(suggestion);
+                        setPhase3Suggestions([]);
+                      }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Focused typing state with "Ask New York Times Anything!" header and autocomplete. Try typing "what" to see suggestions.
+                  </p>
+                </div>
+
+                {/* Phase 4: Searching State */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-medium">Phase 4: Searching State</h4>
+                    <Badge variant="outline">SEARCHING</Badge>
+                  </div>
+                  <div className="p-4 bg-muted/50 rounded-lg flex justify-center">
+                    <SearchingPhase
+                      searchQuery={phase4SearchQuery}
+                      onMicClick={() => console.log("Phase 4: Mic clicked")}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Active search state showing the query header with animated "Searching through..." text cycling through different content types.
+                  </p>
+                </div>
+
+                {/* Phase 5: Results State */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-medium">Phase 5: Results State</h4>
+                    <Badge variant="outline">RESULTS</Badge>
+                  </div>
+                  <div className="p-4 bg-muted/50 rounded-lg flex justify-center">
+                    <ResultsPhase
+                      searchQuery="What did Trump say?"
+                      answerText={mockAnswerText}
+                      isLoadingSources={phase5IsLoadingSources}
+                      sources={mockSourcesPhase5}
+                      onSourceClick={(source) => console.log("Phase 5: Source clicked:", source)}
+                      followUpValue={phase5FollowUpValue}
+                      onFollowUpChange={setPhase5FollowUpValue}
+                      onFollowUpSubmit={(query) => {
+                        console.log("Phase 5: Follow-up search:", query);
+                        setPhase5FollowUpValue("");
+                      }}
+                      onMicClick={() => console.log("Phase 5: Mic clicked")}
+                      onPlusClick={() => console.log("Phase 5: Plus clicked")}
+                      suggestions={["Top Stories", "Breaking News", "Generate a new Wordle"]}
+                      onSuggestionClick={(text) => console.log("Phase 5: Suggestion clicked:", text)}
+                      onMoreClick={() => console.log("Phase 5: More clicked")}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPhase5IsLoadingSources(!phase5IsLoadingSources)}
+                    >
+                      {phase5IsLoadingSources ? "Show Sources" : "Show Loading"}
+                    </Button>
+                    <span>Toggle loading state</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Results phase with complete expanded layout showing search query, answer, sources, follow-up input, suggestions, and footer. Try the loading toggle above.
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t">
+                  <h4 className="text-sm font-medium mb-2">Phase Transition Flow</h4>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Badge variant="secondary">Phase 1</Badge>
+                    <ArrowRight className="h-3 w-3" />
+                    <Badge variant="secondary">Phase 2</Badge>
+                    <ArrowRight className="h-3 w-3" />
+                    <Badge variant="secondary">Phase 3</Badge>
+                    <ArrowRight className="h-3 w-3" />
+                    <Badge variant="secondary">Phase 4</Badge>
+                    <ArrowRight className="h-3 w-3" />
+                    <Badge variant="secondary">Phase 5</Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Collapsed → Click → Expanded → Focus Search → Typing → Enter/Select → Searching → Results
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Atoms Section */}
             <Card>
               <CardHeader>
@@ -278,7 +540,7 @@ export function WidgetShowcase() {
                 {/* Icons */}
                 <div className="space-y-3">
                   <h4 className="text-sm font-medium text-muted-foreground">
-                    Icons
+                    Icons (7 components)
                   </h4>
                   <div className="flex flex-wrap gap-4 items-center p-4 bg-muted/50 rounded-lg">
                     <div className="flex flex-col items-center gap-2">
@@ -311,19 +573,34 @@ export function WidgetShowcase() {
                         GradientIcon
                       </span>
                     </div>
+                    <div className="flex flex-col items-center gap-2">
+                      <ProgressIndicator />
+                      <span className="text-xs text-muted-foreground">
+                        ProgressIndicator
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-center gap-2">
+                      <SourceIcon />
+                      <span className="text-xs text-muted-foreground">
+                        SourceIcon
+                      </span>
+                    </div>
                   </div>
+                  <p className="text-xs text-muted-foreground">
+                    <strong>Used in:</strong> Various UI components for visual feedback and actions. ProgressIndicator shows loading states, SourceIcon marks content sources.
+                  </p>
                 </div>
 
                 {/* Typography */}
                 <div className="space-y-3">
                   <h4 className="text-sm font-medium text-muted-foreground">
-                    Typography
+                    Typography (3 components)
                   </h4>
                   <div className="space-y-2 p-4 bg-muted/50 rounded-lg">
                     <div className="flex items-center gap-4">
                       <Text variant="placeholder">Ask anything...</Text>
                       <span className="text-xs text-muted-foreground">
-                        variant="ask"
+                        variant="placeholder"
                       </span>
                     </div>
                     <div className="flex items-center gap-4">
@@ -338,7 +615,26 @@ export function WidgetShowcase() {
                         variant="powered"
                       </span>
                     </div>
+                    <div className="flex items-center gap-4">
+                      <Text variant="body">Regular body text for content display</Text>
+                      <span className="text-xs text-muted-foreground">
+                        variant="body"
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <SearchingText 
+                        previousItem="books"
+                        currentItem="articles"
+                        nextItem="videos"
+                      />
+                      <span className="text-xs text-muted-foreground">
+                        SearchingText (animated)
+                      </span>
+                    </div>
                   </div>
+                  <p className="text-xs text-muted-foreground">
+                    <strong>Used in:</strong> Phase 3 (Typing), Phase 4 (Searching). SearchingText provides animated text for loading states.
+                  </p>
                 </div>
 
                 {/* Logos */}
@@ -411,39 +707,106 @@ export function WidgetShowcase() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="space-y-4">
+                {/* Buttons Section */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-muted-foreground">Buttons (5 components)</h4>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">CompactButton</h4>
-                      <div className="p-4 bg-muted/50 rounded-lg">
+                      <h5 className="text-sm font-medium">CompactButton</h5>
+                      <div className="p-4 bg-muted/50 rounded-lg flex justify-center">
                         <CompactButton
                           onClick={() => console.log("Compact clicked")}
                         />
                       </div>
+                      <p className="text-xs text-muted-foreground">
+                        Phase 1 collapsed state button with gradient border
+                      </p>
                     </div>
 
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">MoreButton</h4>
+                      <h5 className="text-sm font-medium">ExpandButton</h5>
                       <div className="p-4 bg-muted/50 rounded-lg">
+                        <div className="flex gap-4 justify-center">
+                          <ExpandButton 
+                            isExpanded={false} 
+                            onClick={() => setExpandButtonState(!expandButtonState)}
+                          />
+                          <ExpandButton 
+                            isExpanded={true} 
+                            onClick={() => setExpandButtonState(!expandButtonState)}
+                          />
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Toggle button showing buttonopen.png / buttonclose.png
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h5 className="text-sm font-medium">MoreButton</h5>
+                      <div className="p-4 bg-muted/50 rounded-lg flex justify-center">
                         <MoreButton
                           onClick={() => console.log("More clicked")}
                         />
                       </div>
+                      <p className="text-xs text-muted-foreground">
+                        "More" button with wand icon
+                      </p>
                     </div>
 
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">PlusButton</h4>
-                      <div className="p-4 bg-muted/50 rounded-lg">
+                      <h5 className="text-sm font-medium">PlusButton</h5>
+                      <div className="p-4 bg-muted/50 rounded-lg flex justify-center">
                         <PlusButton
                           onClick={() => console.log("Plus clicked")}
                         />
                       </div>
+                      <p className="text-xs text-muted-foreground">
+                        Circular plus button for actions
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h5 className="text-sm font-medium">PoweredByButton</h5>
+                      <div className="p-4 bg-muted/50 rounded-lg flex justify-center">
+                        <PoweredByButton />
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Footer branding button
+                      </p>
                     </div>
                   </div>
+                </div>
 
-                  <div className="space-y-4">
+                {/* Content Section */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-muted-foreground">Content (4 components)</h4>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">SuggestionItem (Default)</h4>
+                      <h5 className="text-sm font-medium">AnswerHeader</h5>
+                      <div className="p-4 bg-muted/50 rounded-lg">
+                        <AnswerHeader searchQuery="What did Trump say?" />
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Displays user query in results phase
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h5 className="text-sm font-medium">AnswerText</h5>
+                      <div className="p-4 bg-muted/50 rounded-lg">
+                        <AnswerText>
+                          This is a sample answer text that would be displayed in the results phase. 
+                          It can contain multiple sentences and paragraphs.
+                        </AnswerText>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Formatted text for AI responses
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h5 className="text-sm font-medium">SuggestionItem (Default)</h5>
                       <div className="p-4 bg-muted/50 rounded-lg">
                         <SuggestionItem
                           text="Sample suggestion"
@@ -451,12 +814,12 @@ export function WidgetShowcase() {
                         />
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        Default variant with 2-star icon for general suggestions
+                        Default with 2-star icon
                       </p>
                     </div>
 
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">SuggestionItem (Search)</h4>
+                      <h5 className="text-sm font-medium">SuggestionItem (Search)</h5>
                       <div className="p-4 bg-muted/50 rounded-lg">
                         <SuggestionItem
                           text="Search query example"
@@ -465,43 +828,149 @@ export function WidgetShowcase() {
                         />
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        Search variant with magnifying glass icon for autocomplete
+                        Search variant with magnifying glass
                       </p>
                     </div>
 
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">PoweredByButton</h4>
+                      <h5 className="text-sm font-medium">TabBar</h5>
                       <div className="p-4 bg-muted/50 rounded-lg">
-                        <PoweredByButton />
+                        <TabBar
+                          title="Results"
+                          isExpanded={expandButtonState}
+                          onClick={() => setExpandButtonState(!expandButtonState)}
+                        />
                       </div>
+                      <p className="text-xs text-muted-foreground">
+                        Navigation tabs for multi-view interfaces
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                {/* New SearchingAnimation Component */}
-                <div className="space-y-2">
-                  <h4 className="text-sm font-medium">SearchingAnimation</h4>
-                  <div className="p-4 bg-muted/50 rounded-lg">
-                    <SearchingAnimation 
-                      isActive={true}
-                      interval={2000}
-                      items={["articles", "books", "videos", "podcasts", "archives", "newsletters"]}
-                    />
+                {/* Search Section */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-muted-foreground">Search (2 components)</h4>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <h5 className="text-sm font-medium">SearchBar (Complete with dependencies)</h5>
+                      <div className="p-4 bg-muted/50 rounded-lg">
+                        <SearchBar
+                          value={demoSearchValue}
+                          onChange={setDemoSearchValue}
+                          onMicClick={() => console.log("Mic clicked")}
+                          onPlusClick={() => console.log("Plus clicked")}
+                          placeholder="Ask anything..."
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        <strong>Includes:</strong> GlassContainer, PlusButton, MicIcon, NYTimesLogo. Used in all phases for search input.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h5 className="text-sm font-medium">SearchingAnimation</h5>
+                      <div className="p-4 bg-muted/50 rounded-lg">
+                        <SearchingAnimation 
+                          isActive={true}
+                          interval={2000}
+                          items={["articles", "books", "videos", "podcasts", "archives", "newsletters"]}
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Vertical text carousel for Phase 4 searching state
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Vertical text carousel showing "Searching through [content type]" with smooth animations
-                  </p>
                 </div>
 
-                <div className="space-y-2">
-                  <h4 className="text-sm font-medium">SearchBar</h4>
-                  <div className="p-4 bg-muted/50 rounded-lg">
-                    <SearchBar
-                      value=""
-                      onChange={(value) => console.log("Search:", value)}
-                      onMicClick={() => console.log("Mic clicked")}
-                      onPlusClick={() => console.log("Plus clicked")}
-                    />
+                {/* Sources Section - NEW Glass Morphism Design */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-muted-foreground">Sources - Glass Morphism Design 🆕</h4>
+                  <div className="space-y-4">
+                    {/* Individual GlassSourceItem Demo */}
+                    <div className="space-y-2">
+                      <h5 className="text-sm font-medium">GlassSourceItem (Individual)</h5>
+                      <div className="p-6 bg-slate-900 rounded-lg">
+                        <div className="flex gap-6 items-center justify-center">
+                          <div className="flex flex-col items-center gap-2">
+                            <GlassSourceItem
+                              logo="NYT"
+                              percentage="34%"
+                              backgroundColor={tokens.colors.sources.nyt}
+                              isExpanded={false}
+                              index={0}
+                              onClick={() => console.log("NYT clicked")}
+                            />
+                            <span className="text-xs text-gray-400">Collapsed</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-2">
+                            <GlassSourceItem
+                              logo="NYT"
+                              percentage="34%"
+                              backgroundColor={tokens.colors.sources.nyt}
+                              isExpanded={true}
+                              index={0}
+                              onClick={() => console.log("NYT clicked")}
+                            />
+                            <span className="text-xs text-gray-400">Expanded</span>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        <strong>NEW:</strong> Individual source pill with glass morphism effect. Circular when collapsed, expands to pill shape showing percentage.
+                      </p>
+                    </div>
+
+                    {/* Legacy Source Components (keeping for backward compatibility) */}
+                    <details className="group">
+                      <summary className="text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground">
+                        Legacy Source Components (deprecated) ▼
+                      </summary>
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+                        <div className="p-4 bg-muted/50 rounded-lg">
+                          <PercentageSourceItem 
+                            title="NYT Article"
+                            percentage="85"
+                            onClick={() => console.log("Source clicked")}
+                          />
+                          <p className="text-xs text-muted-foreground mt-2">
+                            PercentageSourceItem (old design)
+                          </p>
+                        </div>
+                        <div className="p-4 bg-muted/50 rounded-lg">
+                          <PlusSourceItem
+                            title="Add Source"
+                            onClick={() => console.log("Add source clicked")}
+                          />
+                          <p className="text-xs text-muted-foreground mt-2">
+                            PlusSourceItem (old design)
+                          </p>
+                        </div>
+                      </div>
+                    </details>
+                  </div>
+                </div>
+
+                {/* Effects Section */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-muted-foreground">Effects (1 component)</h4>
+                  <div className="space-y-2">
+                    <h5 className="text-sm font-medium">FadeOverlay</h5>
+                    <div className="p-4 bg-muted/50 rounded-lg">
+                      <div className="relative h-20 overflow-hidden">
+                        <div className="text-sm">
+                          This is a long text that would normally overflow the container. 
+                          The FadeOverlay component creates a gradient fade effect at the bottom
+                          to indicate there's more content below. This is commonly used for
+                          truncating long answer texts in the collapsed state.
+                        </div>
+                        <FadeOverlay />
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Creates gradient fade for content truncation in Phase 5 collapsed state
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -512,7 +981,7 @@ export function WidgetShowcase() {
               <CardHeader>
                 <CardTitle>🧬 Organisms - Complex UI Sections</CardTitle>
                 <CardDescription>
-                  Complex components that combine multiple molecules and atoms
+                  Complex components that combine multiple molecules and atoms with full dependencies
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -522,28 +991,318 @@ export function WidgetShowcase() {
                     <div className="p-4 bg-muted/50 rounded-lg">
                       <Header />
                     </div>
+                    <p className="text-xs text-muted-foreground">
+                      Main header component for widget phases
+                    </p>
                   </div>
 
                   <div className="space-y-2">
-                    <h4 className="text-sm font-medium">SuggestionsList</h4>
+                    <h4 className="text-sm font-medium">AutocompleteDropdown (with SearchBar)</h4>
+                    <div className="p-4 bg-muted/50 rounded-lg">
+                      <div className="relative">
+                        <SearchBar
+                          value={autocompleteValue}
+                          onChange={(value) => {
+                            setAutocompleteValue(value);
+                            setShowDropdown(value.length > 0);
+                          }}
+                          onFocus={() => setShowDropdown(autocompleteValue.length > 0)}
+                          placeholder="Try typing 'what'..."
+                        />
+                        {showDropdown && filteredSuggestions.length > 0 && (
+                          <AutocompleteDropdown
+                            suggestions={filteredSuggestions}
+                            searchValue={autocompleteValue}
+                            onSuggestionSelect={(item: string) => {
+                              setAutocompleteValue(item);
+                              setShowDropdown(false);
+                              console.log("Selected:", item);
+                            }}
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      <strong>Complete search with dropdown</strong> - Try typing "what" to see suggestions. 
+                      <br />
+                      <strong>Requires:</strong> SearchBar for input, SuggestionItem for each suggestion
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium">SourcesBar (with Loading States)</h4>
+                    <div className="space-y-4">
+                      <div className="p-4 bg-muted/50 rounded-lg">
+                        <p className="text-xs font-medium mb-2">Loading State:</p>
+                        <SourcesBar isLoading={true} sources={[]} />
+                      </div>
+                      
+                      <div className="p-4 bg-muted/50 rounded-lg">
+                        <p className="text-xs font-medium mb-2">Loaded State with Sources:</p>
+                        <SourcesBar 
+                          isLoading={false}
+                          sources={mockSourcesDemo}
+                          onSourceClick={(source) => console.log("Source clicked:", source)}
+                        />
+                        <div className="mt-2 flex justify-end">
+                          <button
+                            className="text-xs text-muted-foreground hover:text-foreground"
+                            onClick={() => setSourcesLoading(!sourcesLoading)}
+                          >
+                            Toggle Loading State
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      <strong>Uses:</strong> PercentageSourceItem for each source, ProgressIndicator for loading, SourceIcon for icons
+                      <br />
+                      <strong>Used in:</strong> Phase 5 (Results) to display content sources
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium">SuggestionsList (with SuggestionItems)</h4>
                     <div className="p-4 bg-muted/50 rounded-lg">
                       <SuggestionsList
                         suggestions={[
+                          "What's happening today?",
                           "Top Stories",
                           "Breaking News",
                           "Generate a new Wordle",
                         ]}
                         onSuggestionClick={(text) =>
-                          console.log("Suggestion:", text)
+                          console.log("Suggestion clicked:", text)
                         }
                       />
                     </div>
+                    <p className="text-xs text-muted-foreground">
+                      <strong>Creates:</strong> SuggestionItem for each suggestion with 2-star icons
+                      <br />
+                      <strong>Used in:</strong> Phases 2 and 5 for quick action suggestions
+                    </p>
                   </div>
 
                   <div className="space-y-2">
                     <h4 className="text-sm font-medium">PoweredByFooter</h4>
                     <div className="p-4 bg-muted/50 rounded-lg">
                       <PoweredByFooter />
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Footer component with branding, used in multiple phases
+                    </p>
+                  </div>
+
+                  {/* NEW StackedSources Component */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium">StackedSources (NEW Glass Morphism Design) 🆕</h4>
+                    <div className="p-6 bg-slate-900 rounded-lg">
+                      <div className="flex justify-center">
+                        <StackedSources
+                          sources={[
+                            { 
+                              id: 'nyt', 
+                              logo: 'NYT', 
+                              name: 'NY Times', 
+                              percentage: '34%',
+                              color: tokens.colors.sources.nyt
+                            },
+                            { 
+                              id: 'dailymail', 
+                              logo: 'DM', 
+                              name: 'Daily Mail', 
+                              percentage: '25%',
+                              color: tokens.colors.sources.dailyMail
+                            },
+                            { 
+                              id: 'aw', 
+                              logo: 'AW',
+                              name: 'AW', 
+                              percentage: '10%',
+                              color: tokens.colors.sources.aw
+                            },
+                            { 
+                              id: 'more', 
+                              logo: '•••', 
+                              name: 'More', 
+                              percentage: '10%',
+                              color: tokens.colors.sources.more
+                            }
+                          ]}
+                          onSourceClick={(source) => console.log('Source clicked:', source)}
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      <strong>Hover to expand!</strong> Stacked source pills with overlapping layout. 
+                      All sources expand together on hover to show percentages.
+                      <br />
+                      <strong>Colors:</strong> NYT (#6E5FBC), Daily Mail (#594495), AW (#603C75), More (#333333)
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Component Dependencies Map */}
+            <Card>
+              <CardHeader>
+                <CardTitle>🔗 Component Dependencies Map</CardTitle>
+                <CardDescription>
+                  Understanding which components require others to function properly
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* SearchBar Dependencies */}
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-sm">SearchBar requires:</h4>
+                      <div className="ml-4 space-y-1">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>GlassContainer</span>
+                          <Badge variant="outline" className="text-xs">container</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>PlusButton + PlusButtonIcon</span>
+                          <Badge variant="outline" className="text-xs">action</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>MicIcon + IconButton</span>
+                          <Badge variant="outline" className="text-xs">input</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>NYTimesLogo</span>
+                          <Badge variant="outline" className="text-xs">branding</Badge>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* AutocompleteDropdown Dependencies */}
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-sm">AutocompleteDropdown requires:</h4>
+                      <div className="ml-4 space-y-1">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>SearchBar</span>
+                          <Badge variant="outline" className="text-xs">input</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>SuggestionItem</span>
+                          <Badge variant="outline" className="text-xs">list items</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>Text component</span>
+                          <Badge variant="outline" className="text-xs">typography</Badge>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* SourcesBar Dependencies */}
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-sm">SourcesBar requires:</h4>
+                      <div className="ml-4 space-y-1">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>PercentageSourceItem</span>
+                          <Badge variant="outline" className="text-xs">items</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>SourceIcon</span>
+                          <Badge variant="outline" className="text-xs">icon</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>ProgressIndicator</span>
+                          <Badge variant="outline" className="text-xs">loading</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>Text component</span>
+                          <Badge variant="outline" className="text-xs">labels</Badge>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* ResultsPhase Dependencies */}
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-sm">ResultsPhase requires:</h4>
+                      <div className="ml-4 space-y-1">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>GlassContainer</span>
+                          <Badge variant="outline" className="text-xs">container</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>AnswerHeader + ExpandButton</span>
+                          <Badge variant="outline" className="text-xs">header</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>AnswerText + FadeOverlay</span>
+                          <Badge variant="outline" className="text-xs">content</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>SourcesBar (all sub-components)</span>
+                          <Badge variant="outline" className="text-xs">sources</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>SearchBar</span>
+                          <Badge variant="outline" className="text-xs">follow-up</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>SuggestionsList</span>
+                          <Badge variant="outline" className="text-xs">suggestions</Badge>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span className="text-xs">•</span>
+                          <span>MoreButton + PoweredByButton</span>
+                          <Badge variant="outline" className="text-xs">footer</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t">
+                    <h4 className="font-medium text-sm mb-3">Component Hierarchy Summary</h4>
+                    <div className="bg-muted/50 p-4 rounded-lg">
+                      <pre className="text-xs text-muted-foreground">
+{`Atoms (15 components) → Foundation layer
+├── Icons (7): Visual indicators and actions
+├── Typography (3): Text styling and animation
+├── Logos (2): Brand identity
+└── Containers (3): Layout and structure
+
+Molecules (14 components) → Composed atoms
+├── Buttons (5): User interactions
+├── Search (2): Input and animation
+├── Content (4): Information display
+├── Sources (2): Attribution items
+└── Effects (1): Visual enhancements
+
+Organisms (6 components) → Complex sections
+├── Header, Footer: Layout structure
+├── AutocompleteDropdown: Search enhancement
+├── SourcesBar: Content attribution
+└── SuggestionsList: Quick actions
+
+Phases (4 components) → Complete states
+└── Each phase combines multiple organisms
+
+Templates (1 component) → Full widget
+└── MainFlow: Manages all phases and state`}
+                      </pre>
                     </div>
                   </div>
                 </div>

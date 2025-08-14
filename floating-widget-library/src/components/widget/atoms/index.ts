@@ -6,7 +6,7 @@
 // Icons
 export * from './icons';
 
-// Typography
+// Typography (includes SearchingText)
 export * from './typography';
 
 // Logos
@@ -14,6 +14,3 @@ export * from './logos';
 
 // Containers
 export * from './containers';
-
-// Text Components
-export { SearchingText } from './SearchingText';

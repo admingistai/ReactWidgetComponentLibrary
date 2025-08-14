@@ -130,6 +130,77 @@
       transform: translateY(0);
     }
   }
+
+  /* Results phase animations */
+  @keyframes expandHeight {
+    from {
+      max-height: 120px;
+    }
+    to {
+      max-height: 600px;
+    }
+  }
+
+  @keyframes collapseHeight {
+    from {
+      max-height: 600px;
+    }
+    to {
+      max-height: 120px;
+    }
+  }
+
+  /* Smooth transitions for results content */
+  .results-content {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .results-expand {
+    animation: expandHeight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .results-collapse {
+    animation: collapseHeight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Fade overlay for collapsed text */
+  .text-fade-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 100%);
+  }
+
+  /* Three-line text with fade effect on third line */
+  .text-fade-three-lines {
+    position: relative;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-height: 1.5em;
+    max-height: 4.5em; /* 3 lines * 1.5em line-height */
+    
+    /* Horizontal fade mask starting at 2/3 of the line */
+    -webkit-mask-image: linear-gradient(
+      to right,
+      black 0%,
+      black 66%,      /* Solid text for first 2/3 */
+      transparent 100% /* Fade to transparent for last 1/3 */
+    );
+    mask-image: linear-gradient(
+      to right,
+      black 0%,
+      black 66%,      /* Solid text for first 2/3 */
+      transparent 100% /* Fade to transparent for last 1/3 */
+    );
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* Progress indicator rotation */
+  .progress-rotate {
+    transition: transform 0.2s ease;
+  }
 }
 
 @layer base {

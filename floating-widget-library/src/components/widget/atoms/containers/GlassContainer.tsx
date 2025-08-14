@@ -34,8 +34,8 @@ const variantStyles: Record<ContainerVariant, CSSProperties> = {
     position: 'relative' as const
   },
   expanded: {
-    width: '100%',
-    height: '100%',
+    width: tokens.dimensions.expandedContainer.maxWidth,
+    height: 'auto',
     paddingTop: tokens.spacing.expandedPadding.top,
     paddingBottom: tokens.spacing.expandedPadding.bottom,
     paddingLeft: tokens.spacing.expandedPadding.left,

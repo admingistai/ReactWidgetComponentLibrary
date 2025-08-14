@@ -4,7 +4,7 @@
  */
 
 import { tokens } from '@/lib/design-tokens';
-import { Text } from '../atoms';
+import { Text } from '../../atoms';
 import wandIcon from '@/assets/icons/wand.png';
 
 interface MoreButtonProps {

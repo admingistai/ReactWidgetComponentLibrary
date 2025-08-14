@@ -5,7 +5,7 @@
  */
 
 import { tokens } from '@/lib/design-tokens';
-import { Text, PoweredByLogo } from '../atoms';
+import { Text, PoweredByLogo } from '../../atoms';
 
 interface PoweredByButtonProps {
   onClick?: () => void;

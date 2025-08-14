@@ -4,7 +4,7 @@
  */
 
 import { tokens } from '@/lib/design-tokens';
-import { Text } from '../atoms';
+import { Text } from '../../atoms';
 import twoStarIcon from '@/assets/icons/2star.png';
 import magnifyingGlassIcon from '@/assets/icons/magnifyingglass.png';
 

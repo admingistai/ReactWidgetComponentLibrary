@@ -3,31 +3,31 @@
  * Pure presentational component
  */
 
-import { tokens } from '@/lib/design-tokens';
-import { Text } from '../atoms';
+import { tokens } from "@/lib/design-tokens";
+import { Text } from "../atoms";
 
 interface HeaderProps {
   title?: string;
   className?: string;
 }
 
-export function Header({ 
+export function Header({
   title = "Ask New York Times Anything!",
-  className = '' 
+  className = "",
 }: HeaderProps) {
   return (
-    <div 
+    <div
       className={className}
       style={{
-        alignSelf: 'stretch',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        gap: tokens.spacing['3xl'],
-        display: 'flex'
+        alignSelf: "stretch",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        gap: tokens.spacing["3xl"],
+        display: "flex",
       }}
     >
-      <div style={{ alignSelf: 'stretch' }}>
+      <div style={{ alignSelf: "stretch" }}>
         <Text variant="header">{title}</Text>
       </div>
     </div>

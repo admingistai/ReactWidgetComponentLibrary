@@ -5,7 +5,7 @@
  */
 
 import { tokens } from '@/lib/design-tokens';
-import { GlassContainer, SparkleIcon, NYTimesLogo } from '../atoms';
+import { GlassContainer, SparkleIcon, NYTimesLogo } from '../../atoms';
 
 interface CompactButtonProps {
   onClick: () => void;

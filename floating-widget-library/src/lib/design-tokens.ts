@@ -24,6 +24,12 @@ export const tokens = {
     background: {
       logo: '#000000',
       overlay: 'rgba(255, 255, 255, 0.10)'
+    },
+    sources: {
+      nyt: '#9084FA',      // NYT Lightest Purple (front)
+      dailyMail: '#6F61EF', // Daily Mail Medium Purple
+      aw: '#BB61EF',        // AW Darker Purple
+      more: '#333333'       // More Dark Gray (back)
     }
   },
   spacing: {
@@ -57,7 +63,8 @@ export const tokens = {
     lineHeights: {
       xs: '14px',
       sm: '22.40px',
-      lg: '33.60px'
+      lg: '33.60px',
+      relaxed: '24px'
     },
     weights: {
       normal: 400,
