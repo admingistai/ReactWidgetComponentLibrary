@@ -4,7 +4,6 @@
  */
 
 import { Text } from '../../atoms';
-import { tokens } from '@/lib/design-tokens';
 import type { CSSProperties } from 'react';
 
 interface AnswerHeaderProps {

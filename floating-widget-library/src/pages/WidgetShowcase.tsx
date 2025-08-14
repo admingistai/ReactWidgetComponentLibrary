@@ -123,7 +123,6 @@ export function WidgetShowcase() {
   const [expandButtonState, setExpandButtonState] = useState(false);
   const [sourcesLoading, setSourcesLoading] = useState(true);
   const [demoSearchValue, setDemoSearchValue] = useState("");
-  const [tabSelection, setTabSelection] = useState("tab1");
   
   // Filtered suggestions for autocomplete demo
   const filteredSuggestions = useMemo(() => {
