@@ -14,10 +14,7 @@ interface GlassSourceItemProps {
   isExpanded: boolean;
   index: number;
   backgroundColor: string;
-  expandDirection?: 'right' | 'center';
-  expandedWidth?: number; // Custom expanded width for each source
-  collapsedWidth?: number; // Custom collapsed width (default 40px)
-  logoLeftPosition?: number; // Custom logo left position
+  width: number; // Direct width value instead of expanded/collapsed widths
   onHover?: () => void;
   onLeave?: () => void;
   onClick?: () => void;
@@ -32,10 +29,7 @@ export function GlassSourceItem({
   isExpanded,
   index: _index,
   backgroundColor,
-  expandDirection: _expandDirection = 'right', // Default to right expansion
-  expandedWidth = 140,
-  collapsedWidth = 40,
-  logoLeftPosition = 10,
+  width,
   onClick,
   className = '',
   style = {}
@@ -43,37 +37,28 @@ export function GlassSourceItem({
   // Determine if logo is an image URL or React component/text
   const isImageUrl = typeof logo === 'string' && (logo.includes('/') || logo.includes('.'));
   
-  // Calculate scale factor for transform-based animation
-  const scaleX = isExpanded ? 1 : collapsedWidth / expandedWidth;
-  
   return (
     <motion.button
       className={`glass-source-item ${className}`}
       style={{
         ...style,
         backgroundColor,
-        // zIndex handled by parent container now
         position: 'relative',
         border: 'none',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-start', // Always left-aligned content
+        justifyContent: 'flex-start',
         padding: 0,
         overflow: 'hidden',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        // Always render at expanded width
-        width: expandedWidth,
-        height: 40,
+        height: 40, // Always 40px height
         borderRadius: 20, // Always pill-shaped
-        // CRITICAL: Fixed transform origin for left-edge stability
-        transformOrigin: 'left center',
       }}
       animate={{
-        // Use transform for scaling instead of width animation
-        scaleX: scaleX,
+        width: width,
       }}
       transition={{ 
         duration: 0.3, 
@@ -107,13 +92,17 @@ export function GlassSourceItem({
         }}
       />
       
-      {/* Logo - Adjusted position to account for scaling */}
-      <motion.div 
+      {/* Logo - 8px from right when collapsed, 4px left of percentage when expanded */}
+      <div 
         className="logo-container"
         style={{
           position: 'absolute',
-          left: `${logoLeftPosition}px`, // Custom position for each source
+          left: 'auto',
+          // In collapsed: 8px from right edge
+          // In expanded: 42px from right (11px + ~27px percentage width + 4px gap)
+          right: isExpanded ? '42px' : '8px',
           top: '50%',
+          transform: 'translateY(-50%)', // Center vertically
           zIndex: 1,
           display: 'flex',
           alignItems: 'center',
@@ -122,34 +111,23 @@ export function GlassSourceItem({
           fontSize: '16px',
           fontWeight: 'bold',
         }}
-        animate={{
-          // Counter-scale the logo to maintain its position when parent scales
-          transform: `translateY(-50%) scaleX(${1 / scaleX})`,
-        }}
-        transition={{ 
-          duration: 0.3, 
-          ease: 'easeOut',
-          type: 'spring',
-          stiffness: 300,
-          damping: 25
-        }}
       >
         {isImageUrl ? (
           <img 
             src={logo as string} 
             alt={logoAlt || 'Source logo'} 
             style={{ 
-              width: '20px', 
-              height: '20px',
+              width: '22px', 
+              height: '22px',
               objectFit: 'contain' 
             }}
           />
         ) : (
           <span>{logo}</span>
         )}
-      </motion.div>
+      </div>
       
-      {/* Percentage - Always rendered but with opacity animation */}
+      {/* Percentage - 11px from right when expanded */}
       {percentage && (
         <motion.span 
           className="percentage"
@@ -160,7 +138,7 @@ export function GlassSourceItem({
           }}
           style={{
             position: 'absolute',
-            right: '15px',
+            right: '11px', // 11px from right edge
             top: '50%',
             transform: 'translateY(-50%)',
             zIndex: 1,

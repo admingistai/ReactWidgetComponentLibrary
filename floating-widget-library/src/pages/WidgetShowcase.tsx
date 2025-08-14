@@ -898,35 +898,116 @@ export function WidgetShowcase() {
                   <div className="space-y-4">
                     {/* Individual GlassSourceItem Demo */}
                     <div className="space-y-2">
-                      <h5 className="text-sm font-medium">GlassSourceItem (Individual)</h5>
-                      <div className="p-6 bg-slate-900 rounded-lg">
-                        <div className="flex gap-6 items-center justify-center">
-                          <div className="flex flex-col items-center gap-2">
+                      <h5 className="text-sm font-medium">GlassSourceItem (All 4 Lengths)</h5>
+                      <div className="p-6 bg-slate-900 rounded-lg space-y-6">
+                        {/* NYT - First source (80px expanded) */}
+                        <div className="space-y-2">
+                          <p className="text-xs text-gray-400 font-medium">1. NYT (40px → 73px)</p>
+                          <div className="flex gap-4 items-center">
                             <GlassSourceItem
-                              logo="NYT"
+                              logo="/nytlogo.png"
                               percentage="34%"
                               backgroundColor={tokens.colors.sources.nyt}
                               isExpanded={false}
                               index={0}
-                              onClick={() => console.log("NYT clicked")}
+                              width={40}
+                              onClick={() => window.open('https://www.nytimes.com/', '_blank')}
                             />
-                            <span className="text-xs text-gray-400">Collapsed</span>
-                          </div>
-                          <div className="flex flex-col items-center gap-2">
+                            <span className="text-xs text-gray-500">→</span>
                             <GlassSourceItem
-                              logo="NYT"
+                              logo="/nytlogo.png"
                               percentage="34%"
                               backgroundColor={tokens.colors.sources.nyt}
                               isExpanded={true}
                               index={0}
-                              onClick={() => console.log("NYT clicked")}
+                              width={73}
+                              onClick={() => window.open('https://www.nytimes.com/', '_blank')}
                             />
-                            <span className="text-xs text-gray-400">Expanded</span>
+                          </div>
+                        </div>
+
+                        {/* Daily Mail - Second source (160px expanded) */}
+                        <div className="space-y-2">
+                          <p className="text-xs text-gray-400 font-medium">2. Daily Mail (73px → 146px)</p>
+                          <div className="flex gap-4 items-center">
+                            <GlassSourceItem
+                              logo="/dmlogo.png"
+                              percentage="25%"
+                              backgroundColor={tokens.colors.sources.dailyMail}
+                              isExpanded={false}
+                              index={1}
+                              width={73}
+                              onClick={() => window.open('https://www.dailymail.co.uk/ushome/index.html', '_blank')}
+                            />
+                            <span className="text-xs text-gray-500">→</span>
+                            <GlassSourceItem
+                              logo="/dmlogo.png"
+                              percentage="25%"
+                              backgroundColor={tokens.colors.sources.dailyMail}
+                              isExpanded={true}
+                              index={1}
+                              width={146}
+                              onClick={() => window.open('https://www.dailymail.co.uk/ushome/index.html', '_blank')}
+                            />
+                          </div>
+                        </div>
+
+                        {/* AW - Third source (240px expanded) */}
+                        <div className="space-y-2">
+                          <p className="text-xs text-gray-400 font-medium">3. AW (106px → 212px)</p>
+                          <div className="flex gap-4 items-center">
+                            <GlassSourceItem
+                              logo="/awlogo.png"
+                              percentage="10%"
+                              backgroundColor={tokens.colors.sources.aw}
+                              isExpanded={false}
+                              index={2}
+                              width={106}
+                              onClick={() => window.open('https://aws.amazon.com/co-marketing/', '_blank')}
+                            />
+                            <span className="text-xs text-gray-500">→</span>
+                            <GlassSourceItem
+                              logo="/awlogo.png"
+                              percentage="10%"
+                              backgroundColor={tokens.colors.sources.aw}
+                              isExpanded={true}
+                              index={2}
+                              width={212}
+                              onClick={() => window.open('https://aws.amazon.com/co-marketing/', '_blank')}
+                            />
+                          </div>
+                        </div>
+
+                        {/* More - Fourth source (300px expanded) */}
+                        <div className="space-y-2">
+                          <p className="text-xs text-gray-400 font-medium">4. More (140px → 284px)</p>
+                          <div className="flex gap-4 items-center">
+                            <GlassSourceItem
+                              logo="/morelogo.png"
+                              percentage="10%"
+                              backgroundColor={tokens.colors.sources.more}
+                              isExpanded={false}
+                              index={3}
+                              width={140}
+                              onClick={() => console.log("More sources clicked")}
+                            />
+                            <span className="text-xs text-gray-500">→</span>
+                            <GlassSourceItem
+                              logo="/morelogo.png"
+                              percentage="10%"
+                              backgroundColor={tokens.colors.sources.more}
+                              isExpanded={true}
+                              index={3}
+                              width={284}
+                              onClick={() => console.log("More sources clicked")}
+                            />
                           </div>
                         </div>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        <strong>NEW:</strong> Individual source pill with glass morphism effect. Circular when collapsed, expands to pill shape showing percentage.
+                        <strong>All 4 source lengths:</strong> Collapsed (40px, 73px, 106px, 140px) → Expanded (73px, 146px, 212px, 284px) for progressive reveal.
+                        <br />
+                        <strong>Colors:</strong> NYT (#6E5FBC), Daily Mail (#594495), AW (#603C75), More (#333333)
                       </p>
                     </div>
 
@@ -1110,28 +1191,31 @@ export function WidgetShowcase() {
                           sources={[
                             { 
                               id: 'nyt', 
-                              logo: 'NYT', 
+                              logo: '/nytlogo.png', 
                               name: 'NY Times', 
                               percentage: '34%',
-                              color: tokens.colors.sources.nyt
+                              color: tokens.colors.sources.nyt,
+                              url: 'https://www.nytimes.com/'
                             },
                             { 
                               id: 'dailymail', 
-                              logo: 'DM', 
+                              logo: '/dmlogo.png', 
                               name: 'Daily Mail', 
                               percentage: '25%',
-                              color: tokens.colors.sources.dailyMail
+                              color: tokens.colors.sources.dailyMail,
+                              url: 'https://www.dailymail.co.uk/ushome/index.html'
                             },
                             { 
                               id: 'aw', 
-                              logo: 'AW',
+                              logo: '/awlogo.png',
                               name: 'AW', 
                               percentage: '10%',
-                              color: tokens.colors.sources.aw
+                              color: tokens.colors.sources.aw,
+                              url: 'https://aws.amazon.com/co-marketing/'
                             },
                             { 
                               id: 'more', 
-                              logo: '•••', 
+                              logo: '/morelogo.png', 
                               name: 'More', 
                               percentage: '10%',
                               color: tokens.colors.sources.more
