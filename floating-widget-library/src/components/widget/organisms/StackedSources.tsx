@@ -14,6 +14,7 @@ export interface SourceData {
   name: string;
   percentage: string;
   color: string;
+  url?: string;
 }
 
 interface StackedSourcesProps {
@@ -31,10 +32,12 @@ export function StackedSources({
 }: StackedSourcesProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Define widths and logo positions for each source
-  const collapsedWidths = [40, 80, 110, 140]; // NYT, DM, AW, More (stepped effect)
-  const expandedWidths = [73, 146, 212, 284]; // NYT, DM, AW, More (expanded)
-  const logoPositions = [9, 45, 77, 110]; // Logo left positions for each bar
+  // Define individual widths for each source
+  // Collapsed state: NYT=40px, DM=73px, AW=106px, More=140px
+  const collapsedWidths = [40, 73, 106, 140];
+  
+  // Expanded state: NYT=73px, DM=146px, AW=212px, More=284px
+  const expandedWidths = [73, 146, 212, 284];
 
   return (
     <div 
@@ -44,27 +47,27 @@ export function StackedSources({
       style={{
         position: 'relative',
         height: '40px',
-        width: '300px', // Fixed width to prevent any container movement
-        // No transition on container to ensure absolute stability
+        width: '284px', // Max width of largest expanded item
         ...style
       }}
     >
       {sources.map((source, index) => {
         // Reverse z-index so first item (NYT) has highest z-index
         const zIndex = sources.length - index;
-        // Get custom widths and positions for this source
-        const collapsedWidth = collapsedWidths[index] || 140;
-        const expandedWidth = expandedWidths[index] || 284;
-        const logoLeftPosition = logoPositions[index] || 110;
+        
+        // All items positioned at left:0 for proper stacking
+        const leftPosition = 0;
+        const width = isHovered ? expandedWidths[index] : collapsedWidths[index];
         
         return (
           <div
             key={source.id}
             style={{
               position: 'absolute',
-              left: 0, // ALL items share the SAME left edge
+              left: `${leftPosition}px`,
               top: 0,
               zIndex, // Reversed stacking order
+              transition: 'left 0.3s ease-out',
             }}
           >
             <GlassSourceItem
@@ -74,11 +77,13 @@ export function StackedSources({
               backgroundColor={source.color}
               isExpanded={isHovered}
               index={index}
-              expandDirection="right"
-              expandedWidth={expandedWidth}
-              collapsedWidth={collapsedWidth}
-              logoLeftPosition={logoLeftPosition}
-              onClick={() => onSourceClick?.(source)}
+              width={width}
+              onClick={() => {
+                if (source.url) {
+                  window.open(source.url, '_blank');
+                }
+                onSourceClick?.(source);
+              }}
             />
           </div>
         );

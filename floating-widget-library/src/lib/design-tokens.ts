@@ -26,9 +26,9 @@ export const tokens = {
       overlay: 'rgba(255, 255, 255, 0.10)'
     },
     sources: {
-      nyt: '#9084FA',      // NYT Lightest Purple (front)
-      dailyMail: '#6F61EF', // Daily Mail Medium Purple
-      aw: '#BB61EF',        // AW Darker Purple
+      nyt: '#6E5FBC',      // NYT Purple (front)
+      dailyMail: '#594495', // Daily Mail Darker Purple
+      aw: '#603C75',        // AW Even Darker Purple
       more: '#333333'       // More Dark Gray (back)
     }
   },
