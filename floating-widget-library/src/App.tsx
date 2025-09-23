@@ -1,5 +1,5 @@
 import { Routes, Route, Link, useLocation } from "react-router-dom";
-import { Home, Package, Palette, Sparkles } from "lucide-react";
+import { Home, Package, Palette, Sparkles, Wand } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LandingPage } from "./pages/LandingPage";
 import { WidgetShowcase } from "./pages/WidgetShowcase";
 import { ShadcnShowcase } from "./pages/ShadcnShowcase";
+import { SandboxPage } from "./pages/SandboxPage";
 
 function App() {
   const location = useLocation();
@@ -26,6 +27,11 @@ function App() {
       path: "/shadcn",
       label: "shadcn/ui Components",
       icon: Palette,
+    },
+    {
+      path: "/sandbox",
+      label: "Widget Sandbox",
+      icon: Wand,
     },
   ];
 
@@ -74,6 +80,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/showcase" element={<WidgetShowcase />} />
           <Route path="/shadcn" element={<ShadcnShowcase />} />
+          <Route path="/sandbox" element={<SandboxPage />} />
         </Routes>
       </main>
     </div>

@@ -6,6 +6,12 @@
 // Re-export all phases from the phases folder
 export { ExpandedAnswerTab, TypingPhase, SearchingPhase, ResultsPhase } from './phases';
 
+// Export card components
+export { NewsArticleCard, ShareThreadCard } from './cards';
+
+// Export modal components
+export { ShareThreadModal } from './modals';
+
 // Export other organisms
 export { Header } from './Header';
 export { SuggestionsList } from './SuggestionsList';

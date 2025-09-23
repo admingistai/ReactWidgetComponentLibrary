@@ -101,6 +101,15 @@
     z-index: -1;
   }
 
+  /* Hide scrollbar for swipe experience */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   /* Dark mode gradient border adjustment */
   .dark .gradient-border::before {
     background: linear-gradient(90deg, #C081FF 0%, #B8FFE3 100%);

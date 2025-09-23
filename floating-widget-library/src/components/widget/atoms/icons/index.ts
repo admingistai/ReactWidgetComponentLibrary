@@ -10,4 +10,6 @@ export { MicIcon } from './MicIcon';
 export { GradientIcon } from './GradientIcon';
 export { ProgressIndicator } from './ProgressIndicator';
 export { SourceIcon } from './SourceIcon';
+export { ShareIcon } from './ShareIcon';
+export { CloseIcon } from './CloseIcon';
 export type { IconProps } from './types';

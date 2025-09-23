@@ -3,6 +3,7 @@
  * Pure component - click handling passed from parent
  */
 
+import type { CSSProperties } from 'react';
 import { tokens } from '@/lib/design-tokens';
 import { Text } from '../../atoms';
 import twoStarIcon from '@/assets/icons/2star.png';
@@ -15,6 +16,7 @@ interface SuggestionItemProps {
   variant?: 'default' | 'search';
   highlightText?: string;
   caseSensitive?: boolean;
+  showIcon?: boolean;
 }
 
 // Utility function to split text by highlight
@@ -42,13 +44,14 @@ function splitTextByHighlight(text: string, highlight: string, caseSensitive = f
   };
 }
 
-export function SuggestionItem({ 
-  text, 
-  onClick, 
-  className = '', 
+export function SuggestionItem({
+  text,
+  onClick,
+  className = '',
   variant = 'default',
   highlightText,
-  caseSensitive = false 
+  caseSensitive = false,
+  showIcon = true
 }: SuggestionItemProps) {
   // Select icon based on variant
   const iconSrc = variant === 'search' ? magnifyingGlassIcon : twoStarIcon;
@@ -75,46 +78,69 @@ export function SuggestionItem({
     wordWrap: 'break-word' as const,
   };
 
+  const containerStyles: CSSProperties = {
+    justifyContent: showIcon ? 'flex-start' : 'center',
+    alignItems: 'center',
+    gap: showIcon ? tokens.spacing.md : 0,
+    display: 'inline-flex',
+    cursor: 'pointer',
+    width: '100%',
+    padding: showIcon
+      ? `${tokens.spacing.xs} 0`
+      : `${tokens.spacing.xs} ${tokens.spacing.sm}`,
+    transition: 'opacity 0.2s, background-color 0.2s',
+    textAlign: showIcon ? 'left' : 'center',
+    borderRadius: showIcon ? undefined : '9999px',
+    background: showIcon ? 'transparent' : 'rgba(255, 255, 255, 0.08)'
+  };
+
+  const textStyle: CSSProperties = {
+    ...baseTextStyle,
+    textAlign: showIcon ? 'left' : 'center',
+    width: '100%',
+  };
+
   return (
     <div
       className={className}
       onClick={() => onClick(text)}
-      style={{
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        gap: tokens.spacing.md,
-        display: 'inline-flex',
-        cursor: 'pointer',
-        width: '100%',
-        padding: `${tokens.spacing.xs} 0`,
-        transition: 'opacity 0.2s',
-      }}
+      style={containerStyles}
       onMouseEnter={(e) => {
-        e.currentTarget.style.opacity = '0.8';
+        e.currentTarget.style.opacity = '0.85';
+        if (!showIcon) {
+          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
+        }
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.opacity = '1';
+        if (!showIcon) {
+          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+        }
       }}
     >
-      <img
-        src={iconSrc}
-        alt={iconAlt}
-        style={{
-          width: '16px',
-          height: '16px',
-          objectFit: 'contain'
-        }}
-        loading="eager"
-        draggable={false}
-      />
+      {showIcon && (
+        <img
+          src={iconSrc}
+          alt={iconAlt}
+          style={{
+            width: '16px',
+            height: '16px',
+            objectFit: 'contain'
+          }}
+          loading="eager"
+          draggable={false}
+        />
+      )}
       {hasHighlight ? (
-        <div style={baseTextStyle}>
+        <div style={textStyle}>
           {beforeMatch && <span style={{ color: tokens.colors.text.primary }}>{beforeMatch}</span>}
           <span style={gradientStyle}>{match}</span>
           {afterMatch && <span style={{ color: tokens.colors.text.primary }}>{afterMatch}</span>}
         </div>
       ) : (
-        <Text variant="suggestion">{text}</Text>
+        <Text variant="suggestion" style={textStyle}>
+          {text}
+        </Text>
       )}
     </div>
   );

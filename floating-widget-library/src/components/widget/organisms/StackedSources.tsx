@@ -4,7 +4,7 @@
  * Creates the overlapping stack effect seen in the design
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GlassSourceItem } from '../molecules/sources/GlassSourceItem';
 import type { ReactNode, CSSProperties } from 'react';
 
@@ -31,6 +31,16 @@ export function StackedSources({
   style = {}
 }: StackedSourcesProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Auto-expand after 1 second
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsExpanded(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Define individual widths for each source
   // Collapsed state: NYT=40px, DM=73px, AW=106px, More=140px
@@ -57,7 +67,8 @@ export function StackedSources({
         
         // All items positioned at left:0 for proper stacking
         const leftPosition = 0;
-        const width = isHovered ? expandedWidths[index] : collapsedWidths[index];
+        // Expand if either auto-expanded after 1 second OR hovered
+        const width = (isExpanded || isHovered) ? expandedWidths[index] : collapsedWidths[index];
         
         return (
           <div
@@ -75,7 +86,7 @@ export function StackedSources({
               logoAlt={source.name}
               percentage={source.percentage}
               backgroundColor={source.color}
-              isExpanded={isHovered}
+              isExpanded={isExpanded || isHovered}
               index={index}
               width={width}
               onClick={() => {

@@ -7,11 +7,18 @@
 // Button components
 export { CompactButton, ExpandButton, MoreButton, PlusButton, PoweredByButton } from './buttons';
 
+// Badge components
+export { SourceBadge, PercentageBadge } from './badges';
+
+// Header components
+export { NewsCardHeader, ShareThreadHeader } from './headers';
+
 // Search components
 export { SearchBar, SearchingAnimation } from './search';
 
 // Content components
 export { AnswerHeader, AnswerText, SuggestionItem, TabBar } from './content';
+export { ThreadQuestion, ThreadAnswer, ThreadFooter } from './content';
 
 // Source components
 export { PercentageSourceItem, PlusSourceItem, GlassSourceItem } from './sources';

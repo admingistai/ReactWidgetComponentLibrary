@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "elevenlabs-enhanced": {
+      "command": "node",
+      "args": [
+        "/Users/tjmcgovern/.npm-global/lib/node_modules/elevenlabs-mcp-enhanced/dist/index.js"
+      ],
+      "env": {
+        "ELEVENLABS_API_KEY": "sk_f316d3bd73467a4aa217b417d957742eb363cbd3d44d210c"
+      }
+    }
+  }
+}

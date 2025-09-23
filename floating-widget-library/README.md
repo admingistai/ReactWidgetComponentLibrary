@@ -66,7 +66,7 @@ src/
 
 ```bash
 # Development
-bun run dev         # Start dev server at http://localhost:5173
+bun run dev         # Start dev server at http://localhost:5174
 
 # Build
 bun run build       # Build for production
@@ -75,6 +75,80 @@ bun run preview     # Preview production build
 # Linting
 bun run lint        # Run ESLint
 ```
+
+### 🧪 Testing New Components in the Sandbox
+
+The Widget Sandbox provides an isolated environment for developing and testing new React components. Access it at http://localhost:5174/sandbox.
+
+#### Quick Start for New Components
+
+1. **Navigate to the Sandbox**: Go to http://localhost:5174/sandbox
+2. **Toggle to Custom View**: Click the "Custom" button in the header
+3. **Edit the Component File**: Modify `src/components/custom/CustomComponent.tsx`
+
+#### Working with Custom Components
+
+##### Method 1: Direct Editing (Recommended for Quick Testing)
+Edit the CustomComponent file directly:
+
+```tsx
+// src/components/custom/CustomComponent.tsx
+import React from 'react';
+
+export const CustomComponent: React.FC = () => {
+  // Your component logic here
+  return (
+    <div>
+      {/* Your component JSX */}
+    </div>
+  );
+};
+
+export default CustomComponent;
+```
+
+##### Method 2: Import Your Component
+Import and display an existing component:
+
+```tsx
+// src/components/custom/CustomComponent.tsx
+import React from 'react';
+import MyNewWidget from '../MyNewWidget'; // Import your component
+
+export const CustomComponent: React.FC = () => {
+  return <MyNewWidget />;
+};
+
+export default CustomComponent;
+```
+
+#### Sandbox Features
+
+- **Toggle Views**: Switch between Widget and Custom component views
+- **Background Options**: Test on Light, Dark, Gradient, or Black backgrounds
+- **Grid Overlay**: Enable alignment grid for precise positioning
+- **Reset Button**: Reinitialize components to test initial states
+- **Debug Mode**: Track component interactions and state changes
+- **Hot Reload**: Changes auto-refresh without manual reload
+
+#### Development Workflow
+
+1. **Create Your Component**: Develop your component in its own file
+2. **Import in CustomComponent**: Reference it in `CustomComponent.tsx`
+3. **Test in Sandbox**: Use the sandbox environment to test:
+   - Different background colors
+   - Component interactions
+   - Responsive behavior
+   - State management
+4. **Iterate**: Make changes and see them instantly with hot reload
+
+#### Tips for Component Development
+
+- Use the grid overlay to ensure proper alignment
+- Test on all background options to ensure visibility
+- Enable debug mode to track user interactions
+- Use the reset button to test initialization logic
+- The sandbox maintains the same styling environment as production
 
 ### Path Aliases
 
